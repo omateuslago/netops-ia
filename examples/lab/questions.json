@@ -1,0 +1,21 @@
+{
+  "corpus_version": "netops-lab-v1",
+  "description": "Conjunto de desenvolvimento, não teste independente. Perguntas positivas exigem página e evidência textual; negativas registram a lacuna de abstenção.",
+  "cases": [
+    {"id": "dhcp-01", "query": "Quem fornece automaticamente um endereço para a estação?", "expected": {"filename": "netops-lab-dhcp.pdf", "page": 1, "evidence": "DHCP entrega automaticamente um endereço IP"}},
+    {"id": "dhcp-02", "query": "Por quanto tempo o cliente pode usar o endereço que recebeu?", "expected": {"filename": "netops-lab-dhcp.pdf", "page": 2, "evidence": "A duração da concessão determina"}},
+    {"id": "dhcp-03", "query": "Novos clientes não recebem endereço porque o conjunto ficou sem vagas. O que verificar?", "expected": {"filename": "netops-lab-dhcp.pdf", "page": 2, "evidence": "endereços elegíveis livres no escopo"}},
+    {"id": "dhcp-04", "query": "Como consultar a configuração completa dos adaptadores no Windows?", "expected": {"filename": "netops-lab-dhcp.pdf", "page": 1, "evidence": "ipconfig /all"}},
+    {"id": "dns-01", "query": "Qual serviço converte nomes de computadores em endereços IP?", "expected": {"filename": "netops-lab-dns.pdf", "page": 1, "evidence": "DNS permite resolver nomes"}},
+    {"id": "dns-02", "query": "Como perguntar por um host a um servidor DNS específico?", "expected": {"filename": "netops-lab-dns.pdf", "page": 1, "evidence": "nslookup NOME_DO_HOST IP_DO_DNS"}},
+    {"id": "dns-03", "query": "Tempo de espera esgotado quer dizer que o domínio não existe?", "expected": {"filename": "netops-lab-dns.pdf", "page": 2, "evidence": "um timeout isolado não prova"}},
+    {"id": "dns-04", "query": "Como inspecionar as entradas DNS guardadas no computador sem apagá-las?", "expected": {"filename": "netops-lab-dns.pdf", "page": 2, "evidence": "ipconfig /displaydns"}},
+    {"id": "rede-01", "query": "A interface cabeada não mostra link. O que observar na conexão física?", "expected": {"filename": "netops-lab-conectividade.pdf", "page": 1, "evidence": "confira o encaixe do cabo"}},
+    {"id": "rede-02", "query": "Qual comando envia somente quatro solicitações ICMP ao gateway?", "expected": {"filename": "netops-lab-conectividade.pdf", "page": 2, "evidence": "ping /n 4 IP_DO_GATEWAY"}},
+    {"id": "rede-03", "query": "O ping respondeu. Isso garante que a aplicação está saudável?", "expected": {"filename": "netops-lab-conectividade.pdf", "page": 2, "evidence": "não que uma página web ou aplicação esteja saudável"}},
+    {"id": "rede-04", "query": "O destino não respondeu ao ICMP. Posso concluir que ele está desligado?", "expected": {"filename": "netops-lab-conectividade.pdf", "page": 2, "evidence": "Ausência de resposta não prova sozinha"}},
+    {"id": "ausente-01", "query": "Como configurar uma VPN IPsec em um roteador MikroTik?", "expected": null},
+    {"id": "ausente-02", "query": "Qual é a senha administrativa do switch da empresa?", "expected": null},
+    {"id": "ausente-03", "query": "Quais comandos criam a VLAN 30 em um switch Cisco?", "expected": null}
+  ]
+}

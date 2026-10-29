@@ -1,0 +1,94 @@
+{
+  "version": "netops-lab-v1",
+  "reviewed_on": "2026-10-29",
+  "scope": "Material autoral de estudo. Windows 11 e conceitos IPv4. Não substitui procedimentos aprovados da organização.",
+  "documents": [
+    {
+      "filename": "netops-lab-dhcp.pdf",
+      "title": "DHCP | Endereçamento automático",
+      "pages": [
+        {
+          "title": "Endereço recebido por concessão",
+          "sections": [
+            {"title": "O papel do DHCP", "text": "DHCP entrega automaticamente um endereço IP e parâmetros de rede a clientes configurados para usar esse serviço. A concessão permite utilizar o endereço durante um período definido. Além do endereço, as opções podem informar gateway e servidores DNS. Receber esses parâmetros não comprova que todos os serviços estejam acessíveis."},
+            {"title": "Observação no Windows", "text": "Use ipconfig /all para consultar a configuração completa dos adaptadores. No adaptador utilizado, registre endereço IPv4, máscara, gateway, indicação de DHCP e dados da concessão disponíveis. Não confunda uma interface virtual ou desconectada com a conexão que está investigando."},
+            {"title": "Exercício do laboratório", "text": "Compare os campos de dois computadores de uma rede de testes autorizada. Anote diferenças antes de propor mudanças. Este roteiro não solicita liberar nem renovar a concessão e não executa comandos automaticamente."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - DHCP Server", "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"},
+            {"label": "Microsoft Learn - ipconfig", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"}
+          ]
+        },
+        {
+          "title": "Escopo, disponibilidade e limites",
+          "sections": [
+            {"title": "Conjunto de endereços", "text": "O servidor DHCP administra um conjunto de endereços para concessões. Exclusões retiram endereços da distribuição; reservas associam endereços a clientes específicos. A duração da concessão determina por quanto tempo um cliente pode usar o endereço antes de precisar renová-la."},
+            {"title": "Hipótese do laboratório", "text": "Se não houver endereços elegíveis livres no escopo, novos clientes podem não receber uma concessão desse conjunto. A disponibilidade do escopo é uma hipótese a verificar com o administrador, não uma conclusão obtida apenas porque um computador está sem internet."},
+            {"title": "Encaminhamento seguro", "text": "Registre horário, adaptador afetado e quantidade de clientes com o sintoma. Peça a verificação do escopo antes de sugerir sua expansão. Este guia não contém comandos para alterar escopos, reservas, VLANs ou serviços de produção."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - DHCP Server", "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"}
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "netops-lab-dns.pdf",
+      "title": "DNS | Resolução de nomes",
+      "pages": [
+        {
+          "title": "Consultar um nome no servidor DNS",
+          "sections": [
+            {"title": "O papel do DNS", "text": "DNS permite resolver nomes de computadores em endereços IP. Isso é diferente de entregar uma configuração de endereço ao cliente. Um computador pode ter configuração IP e ainda apresentar falha ao resolver o nome de um serviço."},
+            {"title": "Consulta explícita", "text": "No Windows, nslookup NOME_DO_HOST IP_DO_DNS consulta o nome no servidor DNS indicado. Sem o segundo argumento, a ferramenta usa o servidor DNS padrão. Substitua os marcadores por um nome e um servidor autorizados do seu laboratório; não execute literalmente os marcadores."},
+            {"title": "Registro da evidência", "text": "Anote o nome consultado, o servidor que respondeu e o resultado. Se uma aplicação falhar, essa consulta ajuda a investigar a resolução de nomes, mas sozinha não comprova que o serviço da aplicação esteja funcionando."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - visão geral de DNS", "url": "https://learn.microsoft.com/en-us/windows-server/networking/dns/dns-overview"},
+            {"label": "Microsoft Learn - nslookup", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup"}
+          ]
+        },
+        {
+          "title": "Distinguir erros e observar o cache",
+          "sections": [
+            {"title": "Espera não é resposta negativa", "text": "Um timeout na consulta DNS significa que a resposta não chegou dentro do tempo de espera. A mensagem de domínio inexistente indica uma resposta negativa sobre o nome consultado. Esses resultados não são equivalentes; um timeout isolado não prova que o nome não existe."},
+            {"title": "Inspeção local", "text": "No Windows, ipconfig /displaydns mostra o cache do resolvedor DNS do cliente. A inspeção permite registrar entradas locais antes de qualquer intervenção. Consultar esse cache não é o mesmo teste que perguntar diretamente a um servidor DNS."},
+            {"title": "Exercício do laboratório", "text": "Guarde a mensagem exata recebida e classifique-a como resposta ou ausência de resposta. Não mude o DNS da organização nem limpe o cache como parte deste roteiro. As saídas podem conter nomes internos: remova informações sensíveis antes de compartilhar."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - erros do nslookup", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup"},
+            {"label": "Microsoft Learn - cache em ipconfig", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"}
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "netops-lab-conectividade.pdf",
+      "title": "Conectividade | Triagem inicial",
+      "pages": [
+        {
+          "title": "Organizar a investigação",
+          "sections": [
+            {"title": "Cenário didático", "text": "Uma estação do laboratório está sem acesso a um recurso. Comece registrando qual recurso falha, quando o sintoma começou e se outras estações apresentam o mesmo problema. Não conclua imediatamente que o defeito está no DNS ou no provedor."},
+            {"title": "Conexão e interface", "text": "Em uma conexão cabeada, confira o encaixe do cabo e a indicação de link da interface, sem desconectar equipamentos de produção. Um cabo solto é uma possibilidade, não a única explicação para ausência de link. No Wi-Fi, registre a rede à qual a estação está conectada."},
+            {"title": "Configuração antes do teste", "text": "Consulte ipconfig para observar IP, máscara e gateway. O gateway exibido para a interface em uso é uma referência para investigar o próximo salto. Não invente um endereço de gateway e não copie o de outra rede sem verificar a configuração local."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - configuração com ipconfig", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"}
+          ]
+        },
+        {
+          "title": "O que um ping demonstra",
+          "sections": [
+            {"title": "Teste limitado e autorizado", "text": "No Windows, ping /n 4 IP_DO_GATEWAY envia quatro solicitações ICMP Echo ao destino indicado. Substitua o marcador pelo endereço observado na interface em uso e teste somente destinos autorizados. O comando não altera a configuração, mas gera tráfego de rede."},
+            {"title": "Interpretar sem exagerar", "text": "Uma resposta ao ping comprova que houve resposta ICMP naquele teste, não que uma página web ou aplicação esteja saudável. Ausência de resposta não prova sozinha que o destino está desligado: perda no caminho ou filtragem de ICMP também devem ser consideradas."},
+            {"title": "Comparação útil", "text": "Se o ping ao IP funciona e ao nome falha por resolução, investigue a resolução de nomes. Registre destino, horário, mensagens e perdas observadas. Não use este guia como autorização para desativar firewall ou modificar roteadores."}
+          ],
+          "sources": [
+            {"label": "Microsoft Learn - ping e ICMP", "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ping"}
+          ]
+        }
+      ]
+    }
+  ]
+}

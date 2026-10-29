@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="api-prefix" content="__API_PREFIX__">
+<title>NetOps AI · Console</title>
+<style>
+:root{font-family:Consolas,'Courier New',monospace;color:#252525;background:#ededeb;font-size:14px}*{box-sizing:border-box}body{margin:0}header{padding:22px 28px;border-bottom:2px solid #333;display:flex;justify-content:space-between;align-items:center}h1{font-size:21px;margin:0}h2{font-size:15px;margin:0 0 18px}p{line-height:1.6}a{color:inherit}main{display:grid;grid-template-columns:310px 1fr;max-width:1400px;margin:auto;min-height:85vh}aside{padding:26px;border-right:1px solid #aaa}section.workspace{padding:26px;min-width:0}label{display:block;margin-bottom:9px}input,textarea,select,button{font:inherit}textarea,select,input[type=file]{width:100%;background:#fafaf8;border:1px solid #888;padding:10px;color:inherit}textarea{resize:vertical;min-height:110px}button{background:#333;color:white;border:1px solid #333;padding:10px 15px;cursor:pointer}button.secondary{background:transparent;color:#333}button:disabled{opacity:.5;cursor:wait}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #626262;outline-offset:3px}.row{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-top:14px}.row>div{flex:1;min-width:180px}.muted{color:#626262;font-size:12px}.notice{border:1px dashed #999;padding:12px;margin-top:24px;font-size:12px;line-height:1.6}.status{min-height:22px;white-space:pre-wrap;margin:14px 0}.error{color:#962d26}ul{list-style:none;padding:0}li{padding:12px 0;border-bottom:1px solid #bbb;overflow-wrap:anywhere}article{border:1px solid #aaa;background:#f8f8f6;margin:14px 0;padding:18px}article h3{font-size:13px;margin:0 0 12px;overflow-wrap:anywhere}.text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}#results{margin-top:28px;border-top:1px solid #aaa;padding-top:20px}details{margin-top:20px}summary{cursor:pointer}@media(max-width:760px){main{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid #aaa}header{padding:18px;gap:15px}section.workspace,aside{padding:20px}}
+</style>
+</head>
+<body>
+<header><h1>NETOPS AI <span class="muted">/ CONSOLE LOCAL</span></h1><a href="/docs">API ↗</a></header>
+<main>
+<aside>
+<h2>01 / DOCUMENTOS</h2>
+<form id="upload"><label for="pdf">Adicionar PDF</label><input id="pdf" type="file" accept="application/pdf,.pdf" required><p class="muted">Envie um arquivo por vez, com texto selecionável.</p><button id="send" type="submit">Enviar e indexar</button></form>
+<p id="uploadStatus" class="status" role="status"></p>
+<div class="row"><h2>Base atual</h2><button id="refresh" class="secondary" type="button">Atualizar</button></div>
+<p id="listStatus" role="status" class="muted"></p><ul id="documents"></ul>
+<div class="notice"><strong>PRÓXIMA ETAPA / OLLAMA</strong><br>Depois de testar esta tela, siga o guia <code>docs/extractive-answer.md</code> para preparar o avaliador local. A consulta de trechos já funciona sem ele.</div>
+</aside>
+<section class="workspace">
+<h2>02 / CONSULTA</h2>
+<form id="queryForm">
+<label for="query">O que você precisa consultar?</label><textarea id="query" maxlength="2000" required placeholder="Como inspecionar o cache DNS sem apagá-lo?"></textarea>
+<div class="row"><div><label for="mode">Modo</label><select id="mode"><option value="search">Consultar trechos</option><option value="answer">Selecionar resposta · requer Ollama</option></select></div><div><label for="document">Pesquisar em</label><select id="document"><option value="">Todos os documentos</option></select></div><button id="ask" type="submit">Consultar</button></div>
+<p class="muted">Até 3 fontes por consulta. Similaridade não é certeza factual. A seleção de resposta é experimental.</p>
+</form>
+<p id="queryStatus" class="status" role="status"></p>
+<div id="results" aria-live="polite"><p class="muted">Os trechos e suas páginas aparecerão aqui.</p></div>
+</section>
+</main>
+<script>
+const api=document.querySelector('meta[name="api-prefix"]').content;
+const $=id=>document.getElementById(id);
+function status(id,text,error=false){$(id).textContent=text;$(id).classList.toggle('error',error)}
+async function request(path,options={}){let response;try{response=await fetch(api+path,options)}catch{throw Error('Não foi possível conectar à API. Verifique se o servidor está rodando.')}const data=await response.json();if(!response.ok){const detail=data.detail;throw Error(detail?.message||(Array.isArray(detail)?detail.map(x=>x.msg).join('; '):'Falha na operação. Tente novamente.'))}return data}
+function node(tag,text,className){const el=document.createElement(tag);el.textContent=text;if(className)el.className=className;return el}
+async function loadDocuments(){ $('refresh').disabled=true;status('listStatus','Carregando…');try{const data=await request('/documents');const selected=$('document').value;$('documents').replaceChildren();$('document').replaceChildren(new Option('Todos os documentos',''));for(const doc of data.documents){const li=node('li',doc.filename);li.append(node('div',`${doc.page_count} páginas · ${doc.chunk_count} trechos · ${doc.status}`,'muted'));$('documents').append(li);if(doc.status==='indexed')$('document').add(new Option(doc.filename,doc.document_id))}if([...$('document').options].some(x=>x.value===selected))$('document').value=selected;status('listStatus',data.documents.length?`${data.documents.length} documento(s)`:'Nenhum PDF indexado. Envie o primeiro.')}catch(e){status('listStatus',e.message,true)}finally{$('refresh').disabled=false}}
+$('refresh').onclick=loadDocuments;
+$('upload').onsubmit=async event=>{event.preventDefault();const file=$('pdf').files[0];if(!file)return;$('send').disabled=true;status('uploadStatus','Indexando… O primeiro carregamento do modelo pode demorar.');try{const body=new FormData();body.append('file',file);const data=await request('/documents',{method:'POST',body});status('uploadStatus',data.duplicate?'Este PDF já estava indexado.':`Indexado: ${data.chunk_count} trechos.`);$('upload').reset();await loadDocuments()}catch(e){status('uploadStatus',e.message,true)}finally{$('send').disabled=false}};
+$('queryForm').onsubmit=async event=>{event.preventDefault();const query=$('query').value.trim();if(!query){status('queryStatus','Digite uma pergunta.',true);return}const mode=$('mode').value;$('ask').disabled=true;$('results').replaceChildren();status('queryStatus',mode==='answer'?'Avaliando as fontes no modelo local…':'Buscando trechos…');try{const body={query,top_k:3};if($('document').value)body.document_id=$('document').value;const data=await request('/'+mode,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const items=mode==='search'?data.matches:data.sources;status('queryStatus',mode==='search'?'Busca concluída. Confira se os trechos respondem à pergunta.':'Seleção concluída. Confira as evidências.');if(mode==='answer')$('results').append(node('h2',data.status==='insufficient_evidence'?'Sem evidência selecionada':'Resposta extrativa'),node('p',data.answer,'text'));if(!items.length&&mode==='search')$('results').append(node('p','Nenhum trecho encontrado nesta base.'));for(const [i,item] of items.entries()){const card=document.createElement('article');card.append(node('h3',`[${i+1}] ${item.filename} · página ${item.page}`),node('div',mode==='search'?item.text:item.quote,'text'));if(mode==='search')card.append(node('p',`Similaridade: ${item.score.toFixed(3)} · não é porcentagem de confiança`,'muted'));$('results').append(card)}if(data.note)$('results').append(node('p',data.note,'muted'))}catch(e){status('queryStatus',e.message,true)}finally{$('ask').disabled=false}};
+loadDocuments();
+</script>
+</body></html>
