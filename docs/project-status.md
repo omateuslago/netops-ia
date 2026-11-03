@@ -56,7 +56,7 @@ Os resultados antigos de 88 testes, quatro testes posteriores e 11/12 evidência
 
 ## Próximos incrementos
 
-Atualização após a resposta do usuário: computador Ubuntu 26.04.1 LTS, Ryzen 7 5825U com Radeon integrada, 16 GB de RAM, sem Ollama instalado. Foi preparado o [guia Ubuntu/Ollama](ubuntu-ollama.md) e o launcher `iniciar.sh`. `qwen2.5:3b` é o candidato inicial para teste em CPU; ainda não foi medido nesse hardware. A autorização de mudança do cenário industrial para redes continua pendente.
+Atualização após a resposta do usuário: computador Ubuntu 26.04.1 LTS, Ryzen 7 5825U com Radeon integrada e 16 GB de RAM. Foi preparado o [guia Ubuntu/Ollama](ubuntu-ollama.md) e o launcher `iniciar.sh`. O usuário instalou o Ollama e executou `qwen2.5:3b` com sucesso, recebendo uma resposta coerente em português sobre DNS. A integração com o RAG e a qualidade da seleção de evidências ainda precisam ser medidas. A autorização de mudança do cenário industrial para redes continua pendente.
 
 1. Confirmar ambiente de execução e hardware do computador que rodará Ollama. Escolher o modelo com base nesses dados e consultar documentação oficial antes da instalação.
 2. Validar o modo extrativo com modelo real: perguntas respondíveis de DNS/cabeamento e perguntas ausentes de empilhadeira, VLAN, VPN e senha administrativa. Registrar fontes corretas, falsas recusas, seleções indevidas e falhas de infraestrutura separadamente.
