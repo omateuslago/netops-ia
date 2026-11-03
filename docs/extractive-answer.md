@@ -4,7 +4,7 @@ POST `/api/v1/answer` recebe o mesmo corpo de `/search`. Recupera candidatos e p
 
 Sem evidência selecionada, retorna `insufficient_evidence` e `Não encontrei essa informação na documentação disponível.` Base vazia também retorna esse resultado. Falta de configuração, indisponibilidade, saída inválida e citações inventadas são erros HTTP 503; nunca são apresentados como ausência de informação nos documentos.
 
-O Ollama precisa estar servindo em `127.0.0.1:11434`, com um modelo local instalado. Configure `NETOPS_OLLAMA_MODEL` com o nome exato mostrado por `ollama list`, no mesmo PowerShell que inicia a API, e reinicie o servidor. Não é necessário reenviar os PDFs nem mudar as pastas da base v2.
+O Ollama precisa estar servindo em `127.0.0.1:11434`, com um modelo local instalado. Configure `NETOPS_OLLAMA_MODEL` em `.env` com o nome exato mostrado por `ollama list` e reinicie o servidor. Também é possível definir a variável no terminal que inicia a API. Se os PDFs já estiverem indexados, não é necessário reenviá-los nem mudar as pastas da base v2. Para Linux, consulte o [guia de Ubuntu e Ollama](ubuntu-ollama.md).
 
 Esta implementação foi verificada com testes de contrato, sem avaliador real disponível. Não há comprovação de qualidade semântica nem de resistência a instruções maliciosas nos documentos. Citações literais podem continuar irrelevantes ou omitir contexto; a validação de substring não prova que respondem à pergunta. Não há limiar de similaridade aprovado. Antes de liberar geração livre, avaliar as perguntas positivas, as negativas de VPN/VLAN/senha e a pergunta sobre empilhadeira, registrando falsas recusas e seleções indevidas.
 
