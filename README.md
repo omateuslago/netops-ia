@@ -20,7 +20,9 @@ Fase 1 entregue. Fase 2 com prévia, indexação e busca semântica local (incre
 - detecção de duplicatas por conteúdo e retomada de indexações incompletas;
 - busca de trechos com arquivo, página e pontuação de similaridade.
 
-A prévia continua sem persistência. O novo endpoint de indexação salva PDFs e vetores. Geração de respostas com LLM, recusa por falta de evidência, histórico, remoção/reindexação administrativa e interface Streamlit ainda serão implementados. A busca atual pode retornar trechos irrelevantes: similaridade não é confiança factual.
+A prévia continua sem persistência. O endpoint de indexação salva PDFs e vetores. Há uma interface HTML em `/app` e seleção experimental de citações com Ollama em `/api/v1/answer`, incluindo a mensagem de recusa quando nenhuma evidência é selecionada. Essa resposta é extrativa: geração de uma explicação pelo LLM, histórico de conversas e remoção/reindexação administrativa ainda serão implementados. A busca atual pode retornar trechos irrelevantes: similaridade não é confiança factual.
+
+Consulte [o registro de retomada](docs/project-status.md) para os requisitos acadêmicos, as pendências e os limites da validação atual.
 
 ## Requisitos
 
@@ -30,6 +32,8 @@ A prévia continua sem persistência. O novo endpoint de indexação salva PDFs 
 - Ollama será usado na etapa de geração. Docker poderá ser adotado para o servidor Qdrant posteriormente; nenhum deles é exigido nesta etapa.
 
 ## Instalação no Windows (PowerShell)
+
+Para Ubuntu, consulte o [guia de instalação e Ollama](docs/ubuntu-ollama.md). O comando `bash iniciar.sh` inicia o mesmo laboratório v2 do atalho Windows.
 
 ```powershell
 python -m venv .venv
