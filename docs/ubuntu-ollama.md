@@ -2,7 +2,7 @@
 
 ## Ambiente informado
 
-Ubuntu 26.04.1 LTS, Ryzen 7 5825U com Radeon integrada e 16 GB de RAM. Ollama ainda não instalado no computador do usuário. Esses dados foram informados pelo usuário; o ambiente em nuvem é outra máquina.
+Ubuntu 26.04.1 LTS, Ryzen 7 5825U com Radeon integrada e 16 GB de RAM. Esses dados foram informados pelo usuário; o ambiente em nuvem é outra máquina. O usuário instalou o Ollama e executou `qwen2.5:3b` com sucesso no computador Ubuntu.
 
 Candidato inicial: `qwen2.5:3b`, para estabelecer uma referência com um modelo pequeno. Planejar inicialmente para CPU, sem depender de aceleração da Radeon integrada. O desempenho e a qualidade das decisões precisam ser medidos nesse computador; não há benchmark local ainda. Não é necessário escolher o modelo mais recente para validar o primeiro fluxo.
 
@@ -80,4 +80,4 @@ Esta etapa ainda é extrativa. Geração fundamentada e histórico de conversas 
 
 ## Verificação realizada aqui
 
-O launcher passou na verificação de sintaxe Bash e teve a montagem do comando e a seleção de diretórios verificadas com um executável substituto em pasta temporária. Ollama não foi instalado no computador do usuário por esta conversa, e nenhuma inferência real foi validada nesta etapa.
+O launcher passou na verificação de sintaxe Bash e teve a montagem do comando e a seleção de diretórios verificadas com um executável substituto em pasta temporária. No computador Ubuntu, o usuário executou `qwen2.5:3b` e recebeu uma resposta coerente em português sobre DNS. A integração com o RAG e a qualidade da seleção de evidências ainda não foram validadas.
