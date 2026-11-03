@@ -14,6 +14,8 @@ Os slides apresentam o fluxo documento, chunking, embeddings, banco vetorial, re
 
 ## O que o exemplo incremental já demonstra
 
+Nota de retomada: a descrição do ZIP abaixo foi herdada do trabalho anterior. O arquivo `RAG_TUTOR_INCREMENTAL.zip` não está entre os anexos desta retomada e essa comparação não foi revalidada. Os requisitos acima foram conferidos nos dois PPTX enviados.
+
 - leitura de PDF, DOCX, PPTX e TXT;
 - chunking por quantidade de caracteres;
 - embeddings multilíngues com Sentence Transformers;
@@ -30,7 +32,7 @@ Os slides apresentam o fluxo documento, chunking, embeddings, banco vetorial, re
 | Histórico | Não implementado | SQLite nas próximas fases |
 | Upload | Caminho de pasta digitado pelo usuário | Upload validado pela API e pela interface |
 | Duplicatas | ID inclui caminho, índice e conteúdo | Hash do arquivo e versão de ingestão |
-| Recusa | Instrução flexível no prompt | Mensagem exata mais limiar e validação |
+| Recusa | Instrução flexível no prompt | Mensagem exata e avaliação de evidências; nenhum limiar de similaridade aprovado |
 | Testes | Não há testes | Testes desde a Fase 1 |
 | Dependências | Sem versões fixadas | Faixas compatíveis e instalação reproduzível |
 | Segurança | Sem validação de arquivo ou limites | Validação progressiva e isolamento de conteúdo |
